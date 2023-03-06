@@ -1,72 +1,47 @@
 package AVLTree;
 
-import StackAndQueuePackage.*;
+
+import StackAndQueuePackage.LinkedQueue;
+import StackAndQueuePackage.LinkedStack;
+import StackAndQueuePackage.QueueInterface;
+import StackAndQueuePackage.StackInterface;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class BinaryTree<T> implements BinaryTreeInterface<T> {
-    private BinaryNode<T> root;
+public class AVLTree <T> extends BinaryTree<T>{
 
-    public BinaryTree(){
-        root = null;
-    } // end default constructor
+    private AVLTreeNode<T> root;
+    public AVLTree(){
+        this.root = null;
+    }
 
-    public BinaryTree(T rootData) {
-        root = new BinaryNode<>(rootData);
-    } // end constructor
+    public AVLTree(T rootData){
+        root = new AVLTreeNode<>(rootData);
+    }
 
-    public BinaryTree(T rootData, BinaryTreeInterface<T> leftTree, BinaryTreeInterface<T> rightTree) {
-        initializeTree(rootData, (BinaryTree<T>)leftTree, (BinaryTree<T>)rightTree);
-    } // end constructor
+    public AVLTree(T rootData, BinaryTreeInterface<T> leftTree, BinaryTreeInterface<T> rightTree){
+        initializeTree(rootData, (AVLTree<T>)leftTree, (AVLTree<T>)rightTree);
+    }
 
+    @Override
     public void setTree(T rootData, BinaryTreeInterface<T> leftTree, BinaryTreeInterface<T> rightTree) {
-        initializeTree(rootData, (BinaryTree<T>)leftTree, (BinaryTree<T>)rightTree);
-    } // end setTree
+        initializeTree(rootData, (AVLTree<T>)leftTree, (AVLTree<T>)rightTree);
+    }
+    // -- Not Overriden --
+    // setRootData(T rootData)
+    // T getRootData
+    // isEmpty
+    // clear
+    // getHeight
+    // getNumberOfNodes
 
-    public void setRootData(T rootData) {
-        root.setData(rootData);
-    } // end setRootData
+    protected void setRootNode(AVLTreeNode<T> rootNode){ root = rootNode; }
 
-    public T getRootData() {
-        if (isEmpty())
-            throw new EmptyTreeException();
-        else
-            return root.getData();
-    } // end getRootData
+    protected AVLTreeNode<T> getRootNode(){return root;}
 
-    public boolean isEmpty() {
-        return root == null;
-    } // end isEmpty
-
-    public void clear() {
-        root = null;
-    } // end clear
-
-    public int getHeight() {
-        int height = 0;
-        if (root != null)
-            height = root.getHeight();
-        return height;
-    } // end getHeight
-
-    public int getNumberOfNodes() {
-        int numberOfNodes = 0;
-        if (root != null)
-            numberOfNodes = root.getNumberOfNodes();
-        return numberOfNodes;
-    } // end getNumberOfNodes
-
-    protected void setRootNode(BinaryNode<T> rootNode) {
-        root = rootNode;
-    } // end setRootNode
-
-    protected BinaryNode<T> getRootNode() {
-        return root;
-    } // end getRootNode
-
-    private void initializeTree(T rootData, BinaryTree<T> leftTree, BinaryTree<T> rightTree) {
-        root = new BinaryNode<>(rootData);
+    private void initializeTree(T rootData, AVLTree<T>leftTree, AVLTree<T>rightTree){
+        root = new AVLTreeNode<>(rootData);
 
         if ((leftTree != null) && !leftTree.isEmpty())
             root.setLeftChild(leftTree.root);
@@ -84,63 +59,43 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
 
         if ((rightTree != null) && (rightTree != this))
             rightTree.clear();
-    } // end initializeTree
+    }
 
-    public Iterator<T> getPreorderIterator() {
-        return new PreorderIterator();
-    } // end getPreorderIterator
-
-    public Iterator<T> getPostorderIterator() {
-        return new PostorderIterator();
-    } // end getPostorderIterator
-
-    public Iterator<T> getInorderIterator() {
-        return new InorderIterator();
-    } // end getInorderIterator
-
-    public Iterator<T> getLevelOrderIterator() {
-        return new LevelOrderIterator();
-    } // end getLevelOrderIterator
-
+    //-------------Iterators-----------//
     public void iterativePreorderTraverse() {
-        StackInterface<BinaryNode<T>> nodeStack = new LinkedStack<>();
-        if (root != null)
-            nodeStack.push(root);
-        BinaryNode<T> nextNode;
-        while (!nodeStack.isEmpty())
-        {
+        StackInterface<AVLTreeNode<T>> nodeStack = new LinkedStack<>();
+        if (root != null) nodeStack.push(root);
+        AVLTreeNode<T> nextNode;
+        while (!nodeStack.isEmpty()) {
+
             nextNode = nodeStack.pop();
-            BinaryNode<T> leftChild = nextNode.getLeftChild();
-            BinaryNode<T> rightChild = nextNode.getRightChild();
+            AVLTreeNode<T> leftChild = nextNode.getLeftChild();
+            AVLTreeNode<T> rightChild = nextNode.getRightChild();
 
             // Push into stack in reverse order of recursive calls
-            if (rightChild != null)
-                nodeStack.push(rightChild);
+            if (rightChild != null) nodeStack.push(rightChild);
 
-            if (leftChild != null)
-                nodeStack.push(leftChild);
+            if (leftChild != null) nodeStack.push(leftChild);
 
             System.out.print(nextNode.getData() + " ");
         } // end while
     } // end iterativePreorderTraverse
 
     public void iterativeInorderTraverse() {
-        StackInterface<BinaryNode<T>> nodeStack = new LinkedStack<>();
-        BinaryNode<T> currentNode = root;
+        StackInterface<AVLTreeNode<T>> nodeStack = new LinkedStack<>();
+        AVLTreeNode<T> currentNode = root;
 
         while (!nodeStack.isEmpty() || (currentNode != null))
         {
             // Find leftmost node with no left child
-            while (currentNode != null)
-            {
+            while (currentNode != null){
                 nodeStack.push(currentNode);
                 currentNode = currentNode.getLeftChild();
             } // end while
 
             // Visit leftmost node, then traverse its right subtree
-            if (!nodeStack.isEmpty())
-            {
-                BinaryNode<T> nextNode = nodeStack.pop();
+            if (!nodeStack.isEmpty()){
+                AVLTreeNode<T> nextNode = nodeStack.pop();
                 // Assertion: nextNode != null, since nodeStack was not empty
                 // before the pop
                 System.out.print(nextNode.getData() + " ");
@@ -150,10 +105,9 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
     } // end iterativeInorderTraverse
 
     private class PreorderIterator implements Iterator<T> {
-        private StackInterface<BinaryNode<T>> nodeStack;
+        private StackInterface<AVLTreeNode<T>> nodeStack;
 
-        public PreorderIterator()
-        {
+        public PreorderIterator() {
             nodeStack = new LinkedStack<>();
             if (root != null)
                 nodeStack.push(root);
@@ -164,15 +118,13 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
             return !nodeStack.isEmpty();
         } // end hasNext
 
-        public T next()
-        {
-            BinaryNode<T> nextNode;
+        public T next() {
+            AVLTreeNode<T> nextNode;
 
-            if (hasNext())
-            {
+            if (hasNext()){
                 nextNode = nodeStack.pop();
-                BinaryNode<T> leftChild = nextNode.getLeftChild();
-                BinaryNode<T> rightChild = nextNode.getRightChild();
+                AVLTreeNode<T> leftChild = nextNode.getLeftChild();
+                AVLTreeNode<T> rightChild = nextNode.getRightChild();
 
                 // Push into stack in reverse order of recursive calls
                 if (rightChild != null)
@@ -181,10 +133,7 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
                 if (leftChild != null)
                     nodeStack.push(leftChild);
             }
-            else
-            {
-                throw new NoSuchElementException();
-            }
+            else throw new NoSuchElementException();
 
             return nextNode.getData();
         } // end next
@@ -196,11 +145,10 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
     } // end PreorderIterator
 
     private class PostorderIterator implements Iterator<T> {
-        private StackInterface<BinaryNode<T>> nodeStack;
-        private BinaryNode<T> currentNode;
+        private StackInterface<AVLTreeNode<T>> nodeStack;
+        private AVLTreeNode<T> currentNode;
 
-        public PostorderIterator()
-        {
+        public PostorderIterator() {
             nodeStack = new LinkedStack<>();
             currentNode = root;
         } // end default constructor
@@ -210,19 +158,15 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
             return !nodeStack.isEmpty() || (currentNode != null);
         } // end hasNext
 
-        public T next()
-        {
-            BinaryNode<T> leftChild, rightChild, nextNode = null;
+        public T next() {
+            AVLTreeNode<T> leftChild, rightChild, nextNode = null;
 
             // Find leftmost leaf
-            while (currentNode != null)
-            {
+            while (currentNode != null) {
                 nodeStack.push(currentNode);
                 leftChild = currentNode.getLeftChild();
-                if (leftChild == null)
-                    currentNode = currentNode.getRightChild();
-                else
-                    currentNode = leftChild;
+                if (leftChild == null) currentNode = currentNode.getRightChild();
+                else currentNode = leftChild;
             } // end while
 
             // Stack is not empty either because we just pushed a node, or
@@ -230,27 +174,21 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
             // But Iterator specifies an exception for next() in case
             // hasNext() is false.
 
-            if (!nodeStack.isEmpty())
-            {
+            if (!nodeStack.isEmpty()) {
                 nextNode = nodeStack.pop();
                 // nextNode != null since stack was not empty before pop
 
-                BinaryNode<T> parent = null;
-                if (!nodeStack.isEmpty())
-                {
+                AVLTreeNode<T> parent = null;
+                if (!nodeStack.isEmpty()) {
                     parent = nodeStack.peek();
-                    if (nextNode == parent.getLeftChild())
-                        currentNode = parent.getRightChild();
-                    else
-                        currentNode = null;
+                    if (nextNode == parent.getLeftChild()) currentNode = parent.getRightChild();
+                    else currentNode = null;
                 }
                 else
                     currentNode = null;
             }
-            else
-            {
-                throw new NoSuchElementException();
-            } // end if
+            else throw new NoSuchElementException();
+
 
             return nextNode.getData();
         } // end next
@@ -262,11 +200,10 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
     } // end PostorderIterator
 
     private class InorderIterator implements Iterator<T> {
-        private StackInterface<BinaryNode<T>> nodeStack;
-        private BinaryNode<T> currentNode;
+        private StackInterface<AVLTreeNode<T>> nodeStack;
+        private AVLTreeNode<T> currentNode;
 
-        public InorderIterator()
-        {
+        public InorderIterator() {
             nodeStack = new LinkedStack<>();
             currentNode = root;
         } // end default constructor
@@ -276,27 +213,23 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
             return !nodeStack.isEmpty() || (currentNode != null);
         } // end hasNext
 
-        public T next()
-        {
-            BinaryNode<T> nextNode = null;
+        public T next() {
+            AVLTreeNode<T> nextNode = null;
 
             // Find leftmost node with no left child
-            while (currentNode != null)
-            {
+            while (currentNode != null) {
                 nodeStack.push(currentNode);
                 currentNode = currentNode.getLeftChild();
             } // end while
 
             // Get leftmost node, then move to its right subtree
-            if (!nodeStack.isEmpty())
-            {
+            if (!nodeStack.isEmpty()) {
                 nextNode = nodeStack.pop();
                 // Assertion: nextNode != null, since nodeStack was not empty
                 // before the pop
                 currentNode = nextNode.getRightChild();
             }
-            else
-                throw new NoSuchElementException();
+            else throw new NoSuchElementException();
 
             return nextNode.getData();
         } // end next
@@ -308,10 +241,9 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
     } // end InorderIterator
 
     private class LevelOrderIterator implements Iterator<T> {
-        private QueueInterface<BinaryNode<T>> nodeQueue;
+        private QueueInterface<AVLTreeNode<T>> nodeQueue;
 
-        public LevelOrderIterator()
-        {
+        public LevelOrderIterator() {
             nodeQueue = new LinkedQueue<>();
             if (root != null)
                 nodeQueue.enqueue(root);
@@ -322,15 +254,13 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
             return !nodeQueue.isEmpty();
         } // end hasNext
 
-        public T next()
-        {
-            BinaryNode<T> nextNode;
+        public T next() {
+            AVLTreeNode<T> nextNode;
 
-            if (hasNext())
-            {
+            if (hasNext()) {
                 nextNode = nodeQueue.dequeue();
-                BinaryNode<T> leftChild = nextNode.getLeftChild();
-                BinaryNode<T> rightChild = nextNode.getRightChild();
+                AVLTreeNode<T> leftChild = nextNode.getLeftChild();
+                AVLTreeNode<T> rightChild = nextNode.getRightChild();
 
                 // Add to queue in order of recursive calls
                 if (leftChild != null)
@@ -339,10 +269,7 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
                 if (rightChild != null)
                     nodeQueue.enqueue(rightChild);
             }
-            else
-            {
-                throw new NoSuchElementException();
-            }
+            else throw new NoSuchElementException();
 
             return nextNode.getData();
         } // end next
@@ -352,6 +279,4 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
             throw new UnsupportedOperationException();
         } // end remove
     } // end LevelOrderIterator
-} // end BinaryTree
-
-
+}
