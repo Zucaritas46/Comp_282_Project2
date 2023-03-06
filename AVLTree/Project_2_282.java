@@ -2,8 +2,7 @@ package AVLTree;
 
 import java.util.Scanner;
 
-public class AVLProject_2 {
-
+public class Project_2_282 {
     private final static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         // create the binary tree

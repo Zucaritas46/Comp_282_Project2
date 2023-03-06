@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class BST<E>implements Tree<E> {
+public class BST<E> implements Tree<E> {
 
     protected TreeNode<E> root;
     protected int size = 0;
@@ -162,7 +162,37 @@ public class BST<E>implements Tree<E> {
     @Override
     public Iterator<E> iterator(){return new InorderIterator();}
     private class InorderIterator implements Iterator<E>{
-        
+        private ArrayList<E> list = new ArrayList<>();
+        private int current = 0;
+        public InorderIterator(){inOrder();}
+        private void inOrder(){inOrder(root);}
+        private void inOrder(TreeNode<E> root){
+            if(root == null) return;
+            inOrder(root.left);
+            list.add(root.element);
+            inOrder(root.right);
+        }
+        @Override
+        public boolean hasNext(){
+            if(current < list.size())return true;
+
+            return false;
+        }
+        @Override
+        public E next(){return list.get(current++);}
+        @Override
+        public void remove(){
+            if(current == 0) throw new IllegalStateException();
+            delete(list.get(--current));
+            list.clear();
+            inOrder();
+        }
+    }//End Inner Class
+
+    @Override
+    public void clear(){
+        root = null;
+        size = 0;
     }
 
 }
