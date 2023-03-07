@@ -8,6 +8,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AVLTree/AVLTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/AVLTree/AVLTree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AVLTree/Project_2_282.java" beforeDir="false" afterPath="$PROJECT_DIR$/AVLTree/Project_2_282.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Comp_282_Project2/AVLTree/AVLTree$AVLTreeNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Comp_282_Project2/AVLTree/AVLTree$AVLTreeNode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Comp_282_Project2/AVLTree/AVLTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Comp_282_Project2/AVLTree/AVLTree.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Comp_282_Project2/AVLTree/Project_2_282.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Comp_282_Project2/AVLTree/Project_2_282.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,11 +64,22 @@
       <workItem from="1677801347990" duration="7000" />
       <workItem from="1677993515402" duration="186000" />
       <workItem from="1678041892845" duration="24648000" />
-      <workItem from="1678123508640" duration="5480000" />
+      <workItem from="1678123508640" duration="12816000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/AVLTree/Project_2_282.java</url>
+          <line>22</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

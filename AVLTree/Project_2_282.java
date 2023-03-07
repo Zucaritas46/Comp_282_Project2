@@ -15,6 +15,7 @@ public class Project_2_282 {
             System.out.println("1. Add number");
             System.out.println("2. Delete number");
             System.out.println("3. Traverse Tree");
+            System.out.println("4. Print Tree");
             System.out.println("0. Quit");
             userIn = getUserInput();
             switch (userIn){
@@ -38,6 +39,10 @@ public class Project_2_282 {
                     else if(userIn == 2) tree.postOrder();
                     else if(userIn == 3) tree.preOrder();
                     else System.out.println("Invalid Input! Returning to Main Menu...");
+                    System.out.println("");
+                    break;
+                case 4:
+                    tree.printTree();
                     break;
                 case 0:
                     keepGoing = false;

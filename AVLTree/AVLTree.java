@@ -1,9 +1,6 @@
 package AVLTree;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
+import java.util.*;
 
 
 public class AVLTree <E> extends BST<E>{
@@ -171,6 +168,35 @@ public class AVLTree <E> extends BST<E>{
         size--;
         return true;
     }
+
+    public void printTree(){
+
+        /** Priority Queue that compares based off height
+         *  If same height, then compares elements **/
+        Queue<AVLTreeNode<E>> nodeList = new PriorityQueue<>(new Comparator<AVLTreeNode<E>>() {
+            @Override
+            public int compare(AVLTreeNode<E> o1, AVLTreeNode<E> o2) {
+                if(o2.height - o1.height == 0) return c.compare(o1.element, o2.element);
+                return o2.height - o1.height;
+            }
+        });
+        addInOrder(root, nodeList);
+        while(!nodeList.isEmpty()){
+            AVLTreeNode<E> temp = nodeList.remove();
+            if(nodeList.peek() == null) System.out.println("[" + temp.element + "] ");
+            else if(temp.height > nodeList.peek().height){
+                System.out.print( "[" + temp.element + "] ");
+                System.out.println("");
+            }else System.out.print("[" + temp.element + "] ");
+        }// End While loop
+    }
+    private void addInOrder(TreeNode<E> root, Queue<AVLTreeNode<E>> list){
+        if(root == null) return;
+        addInOrder(root.left,list);
+        list.add((AVLTreeNode<E>) root);
+        addInOrder(root.right,list);
+    }
+
     protected static class AVLTreeNode<E> extends BST.TreeNode<E>{
         protected int height = 0;
         public AVLTreeNode(E o){
