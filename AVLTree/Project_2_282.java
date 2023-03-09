@@ -42,7 +42,7 @@ public class Project_2_282 {
                     System.out.println("");
                     break;
                 case 4:
-                    tree.printTree();
+                    System.out.println(tree.treeToString((AVLTree.AVLTreeNode) tree.root));
                     break;
                 case 0:
                     keepGoing = false;

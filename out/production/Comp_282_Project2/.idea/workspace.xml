@@ -61,11 +61,25 @@
       <workItem from="1677801347990" duration="7000" />
       <workItem from="1677993515402" duration="186000" />
       <workItem from="1678041892845" duration="24648000" />
-      <workItem from="1678123508640" duration="5480000" />
+      <workItem from="1678123508640" duration="13736000" />
+      <workItem from="1678163731109" duration="419000" />
+      <workItem from="1678318348102" duration="2016000" />
+      <workItem from="1678348248802" duration="372000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/AVLTree/Project_2_282.java</url>
+          <line>19</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
